@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akademie Kornberger | Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&family=Playfair+Display:italic,wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="hero-bg">
+        <img src="tobi-portrait.png" alt="Background">
+        <div class="overlay-gradient"></div>
+    </div>
+
+    <div class="main-wrapper">
+        <nav class="navbar">
+            <div class="logo">AKADEMIE <span class="accent-gold">KORNBERGER</span></div>
+            <div class="menu-btn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+
+        <main class="hero">
+            <div class="hero-content">
+                <span class="subtitle">Personal Coaching</span>
+                <h1>Fortschritt ist<br><span class="italic"><span class="accent-gold">kein</span> Zufall.</span></h1>
+                <div class="hero-btn-container">
+                    <a href="termin.html" class="main-button">Jetzt starten</a>
+                </div>
+            </div>
+        </main>
+
+        <a href="https://instagram.com/kornberger.tobias" target="_blank" class="insta-tag">@kornberger.tobias</a>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-nav-links">
+            <a href="index.html" class="menu-link">Home</a>
+            <a href="ueber-mich.html" class="menu-link">Über mich</a>
+            <a href="programme.html" class="menu-link">Pakete</a>
+            <a href="impressum.html" class="menu-link-small">Impressum</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('menuOverlay').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
