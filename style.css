@@ -508,3 +508,18 @@ a { text-decoration: none !important; color: inherit !important; }
     .image-gallery { gap: 30px; }
     .reveal-img { width: 100%; }
 }
+/* Instagram Icon Sichtbarkeit */
+.instagram-link, .footer-social a {
+    display: inline-block;
+    color: #9c846d !important; /* Dein Mokka-Gold */
+    font-size: 24px;           /* Größe anpassen */
+    text-decoration: none;
+    z-index: 999;              /* Damit es oben liegt */
+    position: relative;
+    opacity: 1 !important;     /* Sicherstellen, dass es nicht transparent ist */
+}
+
+.instagram-link:hover {
+    color: #ffffff !important; /* Weiß beim Drüberfahren */
+    transform: scale(1.1);
+}
