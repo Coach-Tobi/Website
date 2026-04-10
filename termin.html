@@ -22,7 +22,6 @@
             display: none;
             animation: fadeIn 0.4s ease;
         }
-        /* Dezenter Hinweis für den Favoriten */
         .option.favorite::after {
             content: "Kundenfavorit";
             display: block;
@@ -32,7 +31,6 @@
             margin-top: 4px;
             font-weight: 600;
         }
-        /* Info-Icon Style */
         .info-icon {
             display: inline-flex;
             align-items: center;
@@ -54,7 +52,6 @@
             background: var(--mokka-accent);
             color: white;
         }
-        /* Style für die Checkbox-Sektion */
         .checkbox-container {
             margin-top: 15px; 
             text-align: left; 
@@ -105,6 +102,8 @@
 
             <form id="academyForm" action="https://formspree.io/f/mbdpbaok" method="POST" novalidate>
                 
+                <input type="text" name="_gotcha" style="display:none !important" tabindex="-1" autocomplete="off">
+
                 <div class="step active" id="step1">
                     <span class="step-number">01 / 06</span>
                     <h2>Wie darf ich dich nennen?</h2>
@@ -128,13 +127,11 @@
                             <input type="number" id="input_gewicht_soll" name="gewicht_soll" placeholder="z.B. 75">
                         </div>
                     </div>
-                    
                     <div class="checkbox-container">
                         <input type="checkbox" id="weight_unknown">
                         <label for="weight_unknown">Ich kenne mein Gewicht aktuell nicht</label>
                     </div>
-
-                    <div class="error-msg" id="error2" style="margin-bottom: 20px;">Bitte gib dein Gewicht an oder wähle die Option "unbekannt"</div>
+                    <div class="error-msg" id="error2" style="margin-bottom: 20px;">Bitte gib dein Gewicht an</div>
                     <div class="btn-group">
                         <button type="button" class="back-btn" onclick="nextStep(1)">Zurück</button>
                         <button type="button" class="next-btn" onclick="validateAndNext(2, 3)">Weiter</button>
@@ -204,7 +201,7 @@
                     <div class="input-box">
                         <label>Telefonnummer</label>
                         <input type="tel" id="input_tel" name="telefon" placeholder="+43 664...">
-                        <div class="error-msg" id="error6">Bitte gib eine gültige Nummer ein</div>
+                        <div class="error-msg" id="error6">Bitte gib eine gültige Nummer ein (z.B. +43...)</div>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="back-btn" onclick="nextStep(5)">Zurück</button>
@@ -231,7 +228,7 @@
         function validateAndNext(current, next) {
             let isValid = false;
             const error = document.getElementById('error' + current);
-            error.style.display = "none";
+            if(error) error.style.display = "none";
 
             if (current === 1) {
                 if (document.getElementById('input_name').value.trim().length > 1) isValid = true;
@@ -240,14 +237,7 @@
                 const ist = document.getElementById('input_gewicht_ist').value;
                 const soll = document.getElementById('input_gewicht_soll').value;
                 const unknown = document.getElementById('weight_unknown').checked;
-
-                if (unknown) {
-                    if (document.getElementById('input_gewicht_ist').value === "") document.getElementById('input_gewicht_ist').value = "0";
-                    if (document.getElementById('input_gewicht_soll').value === "") document.getElementById('input_gewicht_soll').value = "0";
-                    isValid = true;
-                } else if (ist !== "" && soll !== "") {
-                    isValid = true;
-                }
+                if (unknown || (ist !== "" && soll !== "")) isValid = true;
             } 
             else if (current === 3) {
                 if (document.getElementById('selectedFokus').value !== "") isValid = true;
@@ -260,7 +250,7 @@
             }
 
             if (isValid) nextStep(next);
-            else error.style.display = "block";
+            else if(error) error.style.display = "block";
         }
 
         function selectOption(el, type, value) {
@@ -274,13 +264,17 @@
             if(type === 'zeit') document.getElementById('selectedZeit').value = value;
             if(type === 'paket') document.getElementById('selectedPaket').value = value;
             
-            el.parentElement.parentElement.querySelector('.error-msg').style.display = "none";
+            const err = el.parentElement.parentElement.querySelector('.error-msg');
+            if(err) err.style.display = "none";
         }
 
         document.getElementById("academyForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const tel = document.getElementById('input_tel').value.trim();
-            if(tel.length < 7) {
+            
+            // Logische Prüfung: Mindestens 8 Zeichen und muss mit + oder 0 beginnen
+            const telPattern = /^[0\+]/;
+            if(tel.length < 8 || !telPattern.test(tel)) {
                 document.getElementById('error6').style.display = "block";
                 return;
             }
@@ -302,7 +296,7 @@
                     setTimeout(() => { window.location.href = "index.html"; }, 4000);
                 } else { throw new Error(); }
             } catch (error) {
-                alert("Fehler beim Senden.");
+                alert("Fehler beim Senden. Bitte versuche es später erneut.");
                 btn.innerText = "Absenden";
                 btn.disabled = false;
             }
